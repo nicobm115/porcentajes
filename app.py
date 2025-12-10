@@ -30,7 +30,7 @@ with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
     c1, c2 = st.columns(2)
     
     with c1:
-        bruto = st.number_input("Importe Bruto ($)", min_value=0.0, step=10.0)
+        bruto = st.number_input("Importe Bruto ", min_value=0.0, step=10.0)
     with c2:
         # El usuario introduce SU porcentaje
         porc_usuario = st.number_input("Tu Porcentaje (%)", min_value=0.0, max_value=100.0, value=70.0)
@@ -88,3 +88,4 @@ if len(st.session_state['registros']) > 0:
         st.rerun()
 else:
     st.info("No hay registros todavía.")
+
