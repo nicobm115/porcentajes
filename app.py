@@ -19,9 +19,9 @@ total_estudio = sum(item['estudio'] for item in st.session_state['registros'])
 
 # Mostramos 3 columnas de métricas
 col1, col2, col3 = st.columns(3)
-col1.metric("Total Bruto", f"${total_bruto:,.2f}")
-col2.metric("Tu Parte (Neto)", f"${total_neto:,.2f}", delta_color="normal")
-col3.metric("Parte Estudio", f"${total_estudio:,.2f}", delta_color="off") 
+col1.metric("Total Bruto", f"€{total_bruto:,.2f}")
+col2.metric("Tu Parte (Neto)", f"€{total_neto:,.2f}", delta_color="normal")
+col3.metric("Parte Estudio", f"€{total_estudio:,.2f}", delta_color="off") 
 
 st.divider()
 
@@ -53,11 +53,11 @@ with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
                 "porc_usuario": porc_usuario,
                 "neto": neto_usuario,
                 "porc_estudio": porc_estudio, # Guardamos el % del estudio
-                "estudio": neto_estudio       # Guardamos el $ del estudio
+                "estudio": neto_estudio       # Guardamos el € del estudio
             }
             
             st.session_state['registros'].insert(0, nuevo_registro)
-            st.success(f"Registrado: Tú ${neto_usuario:.2f} | Estudio ${neto_estudio:.2f}")
+            st.success(f"Registrado: Tú €{neto_usuario:.2f} | Estudio €{neto_estudio:.2f}")
             st.rerun()
         else:
             st.error("El importe debe ser mayor a 0.")
@@ -72,12 +72,12 @@ if len(st.session_state['registros']) > 0:
         df,
         column_config={
             "fecha": "Fecha",
-            "bruto": st.column_config.NumberColumn("Bruto", format="$%.2f"),
+            "bruto": st.column_config.NumberColumn("Bruto", format="€%.2f"),
             "porc_usuario": st.column_config.NumberColumn("Tu %", format="%.0f%%"),
-            "neto": st.column_config.NumberColumn("Tuyo ($)", format="$%.2f"),
+            "neto": st.column_config.NumberColumn("Tuyo (€)", format="€%.2f"),
             # Nuevas columnas para el estudio
             "porc_estudio": st.column_config.NumberColumn("% Est.", format="%.0f%%"),
-            "estudio": st.column_config.NumberColumn("Estudio ($)", format="$%.2f"),
+            "estudio": st.column_config.NumberColumn("Estudio (€)", format="€%.2f"),
         },
         use_container_width=True,
         hide_index=True
@@ -88,4 +88,5 @@ if len(st.session_state['registros']) > 0:
         st.rerun()
 else:
     st.info("No hay registros todavía.")
+
 
