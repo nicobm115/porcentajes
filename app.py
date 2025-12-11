@@ -9,7 +9,8 @@ st.title("💰 Control de Ingresos")
 
 if 'df' not in st.session_state:
     # Creamos un DataFrame vacío con las columnas necesarias
-    st.session_state.df = pd.DataFrame(columns=["ID", "fecha", "Bruto", "neto", "notas"])
+    st.session_state.df = pd.DataFrame(columns=[ "fecha", "Bruto", "neto", "notas"])
+
 
 
 # --- 4. Formulario de Entrada ---
@@ -24,12 +25,11 @@ with st.form("➕ Añadir Nuevo Ingreso"):
     submitted= st.form_submit_button('añadir')
 
 if submitted:
-    recent_ticket_number= int(max(st.session_state.df.ID).split("-")[1])
+   
     hoy= datetime.now().strftime("%m-%d-%Y")
     df_new = pd.DataFrame(
         [
             {
-                "ID":f"nº-{recent_ticket_number+1}",
                 'fecha': hoy,
                 "Bruto": bruto,
                 "neto": bruto*porc_usuario/100,
@@ -45,7 +45,5 @@ if submitted:
 
 st.header("Tattoos")
 st.write(f"nº: `{len(st.session_state.df)}`")
-
-
 
 
