@@ -11,18 +11,6 @@ if 'df' not in st.session_state:
     # Creamos un DataFrame vacío con las columnas necesarias
     st.session_state.df = pd.DataFrame(columns=["ID", "fecha", "Bruto", "neto", "notas"])
 
-'''
-# Cálculos de totales en tiempo real
-total_bruto = sum(item['bruto'] for item in st.session_state['registros'])
-total_neto = sum(item['neto'] for item in st.session_state['registros'])
-total_estudio = sum(item['estudio'] for item in st.session_state['registros'])
-
-# Mostramos 3 columnas de métricas
-col1, col2, col3 = st.columns(3)
-col1.metric("Total Bruto", f"€{total_bruto:,.2f}")
-col2.metric("Tu Parte (Neto)", f"€{total_neto:,.2f}", delta_color="normal")
-col3.metric("Parte Estudio", f"€{total_estudio:,.2f}", delta_color="off") 
-'''
 
 # --- 4. Formulario de Entrada ---
 with st.form("➕ Añadir Nuevo Ingreso"):
@@ -57,6 +45,7 @@ if submitted:
 
 st.header("Tattoos")
 st.write(f"nº: `{len(st.session_state.df)}`")
+
 
 
 
