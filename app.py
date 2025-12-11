@@ -33,7 +33,7 @@ with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
         bruto = st.number_input("Importe Bruto ", min_value=0, step=10,value=60)
     with c2:
         # El usuario introduce SU porcentaje
-        porc_usuario = st.selectbox("Tu Porcentaje % ", options=[ 60, 70,], index=2)
+        porc_usuario = st.selectbox("Tu Porcentaje % ", options=[ 60, 70,], index=1)
     with c3:
         Nota = st.text_input("Nota ")
 
