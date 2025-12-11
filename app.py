@@ -33,7 +33,7 @@ with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
         bruto = st.number_input("Importe Bruto ", min_value=0, step=10,value=60)
     with c2:
         # El usuario introduce SU porcentaje
-        porc_usuario = st.number_input("Tu Porcentaje (%)", min_value=0, max_value=100, value=70)
+        porc_usuario = st.selectbox("Tu Porcentaje % ", options=[ 60, 70,], index=2)
     with c3:
         Nota = st.text_input("Nota ")
 
@@ -90,6 +90,15 @@ if len(st.session_state['registros']) > 0:
     if st.button("Borrar todo el historial"):
         st.session_state['registros'] = []
         st.rerun()
+    if st.button("Descargar historial como xls "):
+        df.to_excel("historial_ingresos.xlsx", index=False)
+        with open("historial_ingresos.xlsx", "rb") as file:
+            btn = st.download_button(
+                label="Descargar archivo Excel",
+                data=file,
+                file_name="historial_ingresos.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
     if st.button("Amoriwi?"):
         st.info('te quiero 🌻')
         st.balloons()
