@@ -11,18 +11,7 @@ if 'registros' not in st.session_state:
 
 # --- 3. Título y Métricas (Dashboard) ---
 st.title("💰 Control de Ingresos")
-'''
-# Cálculos de totales en tiempo real
-total_bruto = sum(item['bruto'] for item in st.session_state['registros'])
-total_neto = sum(item['neto'] for item in st.session_state['registros'])
-total_estudio = sum(item['estudio'] for item in st.session_state['registros'])
 
-# Mostramos 3 columnas de métricas
-col1, col2, col3 = st.columns(3)
-col1.metric("Total Bruto", f"€{total_bruto:,.2f}")
-col2.metric("Tu Parte (Neto)", f"€{total_neto:,.2f}", delta_color="normal")
-col3.metric("Parte Estudio", f"€{total_estudio:,.2f}", delta_color="off") 
-'''
 
 st.divider()
 
@@ -44,6 +33,7 @@ if submitted:
         [
             {
                 "ID":f"nº-{recent_ticket_number+1}",
+                'fecha': hoy,
                 "Bruto": bruto,
                 "neto": bruto*porc_usuario/100,
                 "notas":Nota
