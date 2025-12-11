@@ -90,9 +90,10 @@ if len(st.session_state['registros']) > 0:
     if st.button("Borrar todo el historial"):
         st.session_state['registros'] = []
         st.rerun()
+    if st.button("Amoriwi?"):
+        st.balloons('te quiero 🌻')
 else:
     st.info("No hay registros todavía.")
-
 
 
 
