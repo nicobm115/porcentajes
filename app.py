@@ -11,7 +11,7 @@ if 'registros' not in st.session_state:
 
 # --- 3. Título y Métricas (Dashboard) ---
 st.title("💰 Control de Ingresos")
-
+'''
 # Cálculos de totales en tiempo real
 total_bruto = sum(item['bruto'] for item in st.session_state['registros'])
 total_neto = sum(item['neto'] for item in st.session_state['registros'])
@@ -22,88 +22,39 @@ col1, col2, col3 = st.columns(3)
 col1.metric("Total Bruto", f"€{total_bruto:,.2f}")
 col2.metric("Tu Parte (Neto)", f"€{total_neto:,.2f}", delta_color="normal")
 col3.metric("Parte Estudio", f"€{total_estudio:,.2f}", delta_color="off") 
+'''
 
 st.divider()
 
 # --- 4. Formulario de Entrada ---
-with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
-    c1, c2,c3 = st.columns(3)
+with st.form("➕ Añadir Nuevo Ingreso"):
     
-    with c1:
-        bruto = st.number_input("Importe Bruto ", min_value=0, step=10,value=60)
-    with c2:
-        # El usuario introduce SU porcentaje
-        porc_usuario = st.selectbox("Tu Porcentaje % ", options=[ 60, 70,], index=1)
-    with c3:
-        Nota = st.text_input("Nota ")
+    bruto = st.number_input("Importe Bruto ", min_value=0, step=10,value=60)
+    
+    porc_usuario = st.selectbox("Tu Porcentaje % ", options=[ 60, 70,], index=1)
 
-    btn_agregar = st.button("Registrar Ingreso", use_container_width=True)
+    Nota = st.text_input("Nota ")
 
-    if btn_agregar:
-        if bruto > 0:
-            # 1. Tu parte
-            neto_usuario = bruto * (porc_usuario / 100)
-            
-            # 2. Parte del estudio (El restante)
-            porc_estudio = 100 - porc_usuario
-            neto_estudio = bruto * (porc_estudio / 100)
-            
-            nuevo_registro = {
-                "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "bruto": bruto,
-                "porc_usuario": porc_usuario,
-                "neto": neto_usuario,
-                "porc_estudio": porc_estudio, 
-                "estudio": neto_estudio ,      
-                "notas": Nota
+    submitted= st.form_submit_button('añadir')
+
+if submitted:
+    recent_ticket_number= int(max(st.session_state.df.ID).split("-")[1])
+    hoy= datetime.now().strftime("%m-%d-%Y")
+    df_new = pd.DataFrame(
+        [
+            {
+                "ID":f"nº-{recent_ticket_number+1}",
+                "Bruto": bruto,
+                "neto": bruto*porc_usuario/100,
+                "notas":Nota
+                
             }
-            
-            st.session_state['registros'].insert(0, nuevo_registro)
-            st.success(f"Registrado: Tú €{neto_usuario:.2f} | Estudio €{neto_estudio:.2f}")
-            st.rerun()
-        else:
-            st.error("El importe debe ser mayor a 0.")
-
-# --- 5. Visualización de Datos (Tabla) ---
-st.subheader("Historial de Registros")
-
-if len(st.session_state['registros']) > 0:
-    df = pd.DataFrame(st.session_state['registros'])
-    
-    st.dataframe(
-        df,
-        column_config={
-            "fecha": "Fecha",
-            "bruto": st.column_config.NumberColumn("Bruto", format="€%.2f"),
-            "porc_usuario": st.column_config.NumberColumn("Tu %", format="%.0f%%"),
-            "neto": st.column_config.NumberColumn("Tuyo (€)", format="€%.2f"),
-            "porc_estudio": st.column_config.NumberColumn("% Est.", format="%.0f%%"),
-            "estudio": st.column_config.NumberColumn("Estudio (€)", format="€%.2f"),
-            "notas": "Notas"
-        },
-        use_container_width=True,
-        hide_index=True
+        ]
     )
-    if st.button("Borrar el último registro"):
-        st.session_state['registros'].pop(0)
-        st.rerun()
-    if st.button("Borrar todo el historial"):
-        st.session_state['registros'] = []
-        st.rerun()
-    if st.button("Descargar historial como xls "):
-        df.to_excel("historial_ingresos.xlsx", index=False)
-        with open("historial_ingresos.xlsx", "rb") as file:
-            btn = st.download_button(
-                label="Descargar archivo Excel",
-                data=file,
-                file_name="historial_ingresos.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
-    if st.button("Amoriwi?"):
-        st.info('te quiero 🌻')
-        st.balloons()
-else:
-    st.info("No hay registros todavía.")
+    
+st.write("Tattoo añadido !")
+st.dataframe(df_new, use_container_width=True, hide_index=True)
+st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
 
-
-
+st.header("Tattoos")
+st.write(f"nº: `{len(st.session_state.df)}`")
