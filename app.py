@@ -27,19 +27,20 @@ st.divider()
 
 # --- 4. Formulario de Entrada ---
 with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
-    c1, c2 = st.columns(2)
+    c1, c2,c3 = st.columns(3)
     
     with c1:
         bruto = st.number_input("Importe Bruto ", min_value=0.0, step=10.0)
     with c2:
         # El usuario introduce SU porcentaje
         porc_usuario = st.number_input("Tu Porcentaje (%)", min_value=0.0, max_value=100.0, value=70.0)
+    with c3:
+        Nota = st.text_input("Nota ")
 
     btn_agregar = st.button("Registrar Ingreso", use_container_width=True)
 
     if btn_agregar:
         if bruto > 0:
-            # --- LÓGICA DE NEGOCIO ---
             # 1. Tu parte
             neto_usuario = bruto * (porc_usuario / 100)
             
@@ -52,8 +53,9 @@ with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
                 "bruto": bruto,
                 "porc_usuario": porc_usuario,
                 "neto": neto_usuario,
-                "porc_estudio": porc_estudio, # Guardamos el % del estudio
-                "estudio": neto_estudio       # Guardamos el € del estudio
+                "porc_estudio": porc_estudio, 
+                "estudio": neto_estudio ,      
+                "notas": Nota
             }
             
             st.session_state['registros'].insert(0, nuevo_registro)
@@ -75,18 +77,22 @@ if len(st.session_state['registros']) > 0:
             "bruto": st.column_config.NumberColumn("Bruto", format="€%.2f"),
             "porc_usuario": st.column_config.NumberColumn("Tu %", format="%.0f%%"),
             "neto": st.column_config.NumberColumn("Tuyo (€)", format="€%.2f"),
-            # Nuevas columnas para el estudio
             "porc_estudio": st.column_config.NumberColumn("% Est.", format="%.0f%%"),
             "estudio": st.column_config.NumberColumn("Estudio (€)", format="€%.2f"),
+            "notas": "Notas"
         },
         use_container_width=True,
         hide_index=True
     )
-    
+    if st.button("Borrar el último registro"):
+        st.session_state['registros'].pop(0)
+        st.rerun()
     if st.button("Borrar todo el historial"):
         st.session_state['registros'] = []
         st.rerun()
 else:
     st.info("No hay registros todavía.")
+
+
 
 
