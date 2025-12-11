@@ -5,15 +5,20 @@ from datetime import datetime
 # --- 1. Configuración de la Página ---
 st.set_page_config(page_title="Tracker de Ingresos", layout="centered")
 
-# --- 2. Gestión del Estado ---
-if 'registros' not in st.session_state:
-    st.session_state['registros'] = []
-
-# --- 3. Título y Métricas (Dashboard) ---
 st.title("💰 Control de Ingresos")
 
+'''
+# Cálculos de totales en tiempo real
+total_bruto = sum(item['bruto'] for item in st.session_state['registros'])
+total_neto = sum(item['neto'] for item in st.session_state['registros'])
+total_estudio = sum(item['estudio'] for item in st.session_state['registros'])
 
-st.divider()
+# Mostramos 3 columnas de métricas
+col1, col2, col3 = st.columns(3)
+col1.metric("Total Bruto", f"€{total_bruto:,.2f}")
+col2.metric("Tu Parte (Neto)", f"€{total_neto:,.2f}", delta_color="normal")
+col3.metric("Parte Estudio", f"€{total_estudio:,.2f}", delta_color="off") 
+'''
 
 # --- 4. Formulario de Entrada ---
 with st.form("➕ Añadir Nuevo Ingreso"):
@@ -41,10 +46,3 @@ if submitted:
             }
         ]
     )
-    
-st.write("Tattoo añadido !")
-st.dataframe(df_new, use_container_width=True, hide_index=True)
-st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
-
-st.header("Tattoos")
-st.write(f"nº: `{len(st.session_state.df)}`")
