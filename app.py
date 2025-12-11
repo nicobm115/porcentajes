@@ -51,11 +51,12 @@ if submitted:
         ]
     )
     
-st.write("Tattoo añadido !")
-st.dataframe(df_new, use_container_width=True, hide_index=True)
-st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
+    st.write("Tattoo añadido !")
+    st.dataframe(df_new, use_container_width=True, hide_index=True)
+    st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
 
 st.header("Tattoos")
 st.write(f"nº: `{len(st.session_state.df)}`")
+
 
 
