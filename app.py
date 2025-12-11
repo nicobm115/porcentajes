@@ -91,7 +91,8 @@ if len(st.session_state['registros']) > 0:
         st.session_state['registros'] = []
         st.rerun()
     if st.button("Amoriwi?"):
-        st.balloons('te quiero 🌻')
+        st.info('te quiero 🌻')
+        st.balloons()
 else:
     st.info("No hay registros todavía.")
 
