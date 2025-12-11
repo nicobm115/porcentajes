@@ -30,10 +30,10 @@ with st.expander("➕ Añadir Nuevo Ingreso", expanded=True):
     c1, c2,c3 = st.columns(3)
     
     with c1:
-        bruto = st.number_input("Importe Bruto ", min_value=0.0, step=10.0)
+        bruto = st.number_input("Importe Bruto ", min_value=0.0, step=10.0,value=60)
     with c2:
         # El usuario introduce SU porcentaje
-        porc_usuario = st.number_input("Tu Porcentaje (%)", min_value=0.0, max_value=100.0, value=70.0)
+        porc_usuario = st.number_input("Tu Porcentaje (%)", min_value=0.0, max_value=100.0, value=70)
     with c3:
         Nota = st.text_input("Nota ")
 
@@ -94,6 +94,7 @@ if len(st.session_state['registros']) > 0:
         st.balloons('te quiero 🌻')
 else:
     st.info("No hay registros todavía.")
+
 
 
 
