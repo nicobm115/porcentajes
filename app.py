@@ -7,6 +7,10 @@ st.set_page_config(page_title="Tracker de Ingresos", layout="centered")
 
 st.title("💰 Control de Ingresos")
 
+if 'df' not in st.session_state:
+    # Creamos un DataFrame vacío con las columnas necesarias
+    st.session_state.df = pd.DataFrame(columns=["ID", "fecha", "Bruto", "neto", "notas"])
+
 '''
 # Cálculos de totales en tiempo real
 total_bruto = sum(item['bruto'] for item in st.session_state['registros'])
@@ -46,3 +50,12 @@ if submitted:
             }
         ]
     )
+    
+st.write("Tattoo añadido !")
+st.dataframe(df_new, use_container_width=True, hide_index=True)
+st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
+
+st.header("Tattoos")
+st.write(f"nº: `{len(st.session_state.df)}`")
+
+
